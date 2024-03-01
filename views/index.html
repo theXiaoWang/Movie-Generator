@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="/styles/index.css" />
+	</head>
+	<body>
+		<section>
+			<div class="speech-bubble-ai" id="speech-bubble-ai">
+				<p id="dungeon-master-text">
+					give me your player info, I will give you a game setting and a concept art for your adventure
+				</p>
+			</div>
+			<div class="setup-input-container">
+				<textarea id="setup-textarea" cols="30" rows="10" placeholder="type prompt"></textarea>
+				<button id="send-btn">send</button>
+			</div>
+		</section>
+
+		<section class="output-container" id="output-container">
+			<h1 id="output-title"></h1>
+			<h2 id="output-text"></h2>
+		</section>
+	</body>
+
+	<script type="module" src="/scripts/index.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</html>
