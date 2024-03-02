@@ -8,4 +8,4 @@
 
 # Movie Plot Generator
 
-This little chatbot using OpenAI API (gpt-3.5 turbo) can generate movie plots based on the prompt from which users have entered. The movie generator is fine tuned to tailor engaging, professional movie plots. Each movie plots is about 350 words.
+This little chatbot using OpenAI API (gpt-3.5 turbo) can generate movie plots based on the prompt from which users have entered. The movie generator is fine tuned to generate engaging, professional movie plots. Each movie plot is about 350 words.
