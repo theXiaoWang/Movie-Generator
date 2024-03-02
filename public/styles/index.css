@@ -1,3 +1,6 @@
 .output-container {
-	display: none;
+	/* display: none; */
+	border: 2px solid black;
+	word-wrap: break-word;
+	width: 235px; /* or any other value you prefer */
 }

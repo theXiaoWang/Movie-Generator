@@ -20,8 +20,24 @@ app.post("/fetch-reply", async (req, res) => {
 		const response = await openai.chat.completions.create({
 			model: "gpt-3.5-turbo",
 			messages: [{ role: "user", content: req.body.content }],
+			max_tokens: 60,
 		});
 		// console.log(response.choices[0].message.content);
+		res.json(response.choices[0].message.content); // Send only the needed data back to the frontend
+	} catch (error) {
+		console.error(error);
+		res.status(500).send(error.message);
+	}
+});
+
+app.post("/fetch-Synopsis", async (req, res) => {
+	try {
+		const response = await openai.chat.completions.create({
+			model: "gpt-3.5-turbo",
+			messages: [{ role: "user", content: req.body.content }],
+			max_tokens: 700,
+		});
+		console.log(response.choices[0].message.content);
 		res.json(response.choices[0].message.content); // Send only the needed data back to the frontend
 	} catch (error) {
 		console.error(error);
