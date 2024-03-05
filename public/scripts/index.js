@@ -9,7 +9,7 @@ document.querySelector("#send-btn").addEventListener("click", () => {
 		// setupInputContainer.innerHTML = "<p> loading... </p>";
 		movieAiText.textContent = "Ok, let me generating...";
 		fetchBotReply(userInput);
-		// fetchSynopsis(userInput);
+		fetchSynopsis(userInput);
 		setupTextarea.value = "";
 	}
 });
@@ -52,7 +52,7 @@ async function fetchBotReply(outline) {
 async function fetchSynopsis(outline) {
 	try {
 		const response = await axios.post(
-			"/fetch-Synopsis",
+			"/fetch-synopsis",
 			{
 				content: `
 				###
@@ -81,9 +81,30 @@ async function fetchSynopsis(outline) {
 				},
 			}
 		);
-		movieSynopsis.textContent = response.data;
+		const synopsis = response.data;
+		movieSynopsis.textContent = synopsis;
+		fetchTitle(synopsis);
 	} catch (error) {
 		console.log("Error:", error);
 		movieSynopsis.textContent = "Failed to fetch the reply. Please try again.";
+	}
+}
+
+async function fetchTitle(synopsis) {
+	try {
+		const response = await axios.post(
+			"/fetch-title",
+			{
+				content: `Generate a suitable title for the synopsis: ${synopsis}`,
+			},
+			{
+				headers: { "Content-Type": "application/json" },
+			}
+		);
+		const title = response.data;
+		document.querySelector("#output-title").textContent = title;
+	} catch (error) {
+		console.log("Error:", error);
+		document.querySelector("#output-title").textContent = "Failed to fetch the reply. Please try again.";
 	}
 }
