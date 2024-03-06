@@ -2,12 +2,19 @@ const setupInputContainer = document.querySelector(".setup-input-container");
 const movieAiText = document.querySelector("#movie-ai-text");
 const movieSynopsis = document.querySelector("#output-text");
 
+function toggleLoading() {
+	const loading = document.querySelector(".loading-container");
+	loading.style.display = loading.style.display === "none" || loading.style.display === "" ? "flex" : "none";
+	setupInputContainer.style.display = loading.style.display === "flex" ? "none" : "flex";
+}
+
 document.querySelector("#send-btn").addEventListener("click", () => {
 	const setupTextarea = document.querySelector("#setup-textarea");
-	if (setupTextarea.value) {
-		const userInput = setupTextarea.value;
-		// setupInputContainer.innerHTML = "<p> loading... </p>";
+	if (setupTextarea.value.trim()) {
+		const userInput = setupTextarea.value.trim();
+		toggleLoading();
 		movieAiText.textContent = "Ok, let me generating...";
+		document.querySelector(".output-container").style.display = "block";
 		fetchBotReply(userInput);
 		fetchSynopsis(userInput);
 		setupTextarea.value = "";
@@ -16,10 +23,8 @@ document.querySelector("#send-btn").addEventListener("click", () => {
 
 async function fetchBotReply(outline) {
 	try {
-		const response = await axios.post(
-			"/fetch-reply",
-			{
-				content: `
+		const response = await axios.post("/fetch-reply", {
+			content: `
 				###
 				outline: A mad scientist created a machine that controls all human minds, until an unexpected bug breaks everything down.
 				message: This is a really intriguing idea! Mad evil scientist, mysterious machine!
@@ -33,13 +38,7 @@ async function fetchBotReply(outline) {
 				outline:${outline}
 				message: 
 				`,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-				},
-			}
-		);
+		});
 		// No need to call response.json() with Axios, use response.data directly
 		// const data = response.data;
 		movieAiText.textContent = response.data;
@@ -51,10 +50,8 @@ async function fetchBotReply(outline) {
 
 async function fetchSynopsis(outline) {
 	try {
-		const response = await axios.post(
-			"/fetch-synopsis",
-			{
-				content: `
+		const response = await axios.post("/fetch-synopsis", {
+			content: `
 				###
 				outline: A wife find out his husband has an unspoken secret, but the truth is far more complicated than it seems...
 				synopsis:In the serene town of Willow Creek, Emma and Michael Richardson live what appears to be a perfect life. With a beautiful home, a loving marriage, and a close-knit community, they seem to have it all. However, their idyllic existence is shattered when Emma stumbles upon a series of mysterious letters hidden in Michael's study, hinting at a life he has never spoken of.
@@ -74,13 +71,7 @@ async function fetchSynopsis(outline) {
 				outline: ${outline}
 				synopsis:
 				`,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-				},
-			}
-		);
+		});
 		const synopsis = response.data;
 		movieSynopsis.textContent = synopsis;
 		fetchTitle(synopsis);
@@ -92,18 +83,11 @@ async function fetchSynopsis(outline) {
 
 async function fetchTitle(synopsis) {
 	try {
-		const response = await axios.post(
-			"/fetch-title",
-			{
-				content: `Generate a suitable title for the synopsis: ${synopsis}`,
-			},
-			{
-				headers: { "Content-Type": "application/json" },
-			}
-		);
+		const response = await axios.post("/fetch-title", {
+			content: `Generate a suitable title for the synopsis: ${synopsis}`,
+		});
 		const title = response.data;
 		document.querySelector("#output-title").textContent = title;
-
 		fetchImagePrompt(title, synopsis);
 	} catch (error) {
 		console.log("Error:", error);
@@ -113,10 +97,8 @@ async function fetchTitle(synopsis) {
 
 async function fetchImagePrompt(title, synopsis) {
 	try {
-		const response = await axios.post(
-			"/fetch-image-prompt",
-			{
-				content: `Generate a short description of an image which could be used to advertise a movie based on a title
+		const response = await axios.post("/fetch-image-prompt", {
+			content: `Generate a short description of an image which could be used to advertise a movie based on a title
 				and synopsis. The description should be rich in visual details but contain no names.
 				###
 				title: Shadows of Tomorrow
@@ -131,32 +113,22 @@ async function fetchImagePrompt(title, synopsis) {
 				synopsis: ${synopsis}
 				image description: 
 				`,
-			},
-			{
-				headers: { "Content-Type": "application/json" },
-			}
-		);
-
-		fetchImageUrl(response.data);
+		});
+		fetchImageUrl(response.data, title);
 	} catch (error) {
 		console.log("Error:", error);
 		document.querySelector("#output-title").textContent = "Failed to fetch the reply. Please try again.";
 	}
 }
 
-async function fetchImageUrl(imagePrompt) {
+async function fetchImageUrl(imagePrompt, title) {
 	try {
-		const response = await axios.post(
-			"/fetch-image-url",
-			{
-				content: `${imagePrompt}, there should be no text in this image`,
-			},
-			{
-				headers: { "Content-Type": "application/json" },
-			}
-		);
-		console.log("Image response data:", response.data);
+		const response = await axios.post("/fetch-image-url", {
+			content: `${imagePrompt}, should be like Netflix style movie poster and add the movie title, ${title}, to the poster`,
+		});
+		// console.log("Image response data:", response.data);
 		document.querySelector("#output-img-container").innerHTML = `<img src="${response.data}" />`;
+		toggleLoading();
 	} catch (error) {
 		console.log("Error fetching image URL:", error);
 	}

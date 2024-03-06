@@ -1,12 +1,171 @@
 .output-container {
-	/* display: none; */
+	display: none;
 	border: 2px solid black;
 	word-wrap: break-word;
-	width: 235px; /* or any other value you prefer */
+	margin: 1em 0;
+	border-radius: 20px;
 }
 
+@media (max-width: 768px) {
+	/* Adjust font sizes, padding, margins, etc., for smaller screens */
+	.main-prompt-area {
+		padding: 1em;
+	}
+}
 .output-img-container img {
 	max-width: 100%;
-	border-radius: var(--border-red-lg);
+	height: auto; /* Maintain aspect ratio */
+	border-radius: 20px;
 	box-shadow: 1px 1px 5px 1px var(--dark);
+}
+
+/*
+ * Globals
+ */
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+	color: #333;
+	text-shadow: none; /* Prevent inheritance from `body` */
+}
+
+/*
+ * Base structure
+ */
+
+body {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	/* text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5); */
+	box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
+}
+
+.ai-text-greeting {
+	text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
+}
+
+.cover-container {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	margin: 20px;
+}
+
+#main-body {
+	background-image: url("../images/Bg.png");
+	background-size: cover; /* This will cover the entire area of the element */
+	background-repeat: no-repeat; /* This will prevent the image from repeating */
+}
+/*
+ * Header
+ */
+
+.nav-masthead .nav-link {
+	padding: 0.25rem 0;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.5);
+	background-color: transparent;
+	border-bottom: 0.25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+	border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+.nav-masthead .nav-link + .nav-link {
+	margin-left: 1rem;
+}
+
+.nav-masthead .active {
+	color: #fff;
+	border-bottom-color: #fff;
+}
+
+.header-container {
+	display: flex; /* Align children elements in a row */
+	align-items: center; /* Center align vertically */
+	justify-content: center; /* Center align horizontally, if needed */
+}
+
+.header-container img {
+	margin-right: 10px; /* Add some space between the image and the title */
+}
+
+.main-prompt-area {
+	background-color: #fff;
+	border-radius: 20px;
+	padding: 20px; /* Add padding as necessary */
+	margin: auto; /* This ensures it stays centered in the flex container */
+	box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
+	max-width: 100%; /* Prevents overflow */
+	word-wrap: break-word;
+}
+
+#movie-ai-text,
+#output-title,
+#output-text {
+	margin: 0.5em 0;
+	color: black;
+}
+
+#movie-ai-text {
+	text-align: left;
+}
+
+#output-text {
+	text-align: left;
+}
+
+/* .main-prompt-area p {
+	text-align: left;
+} */
+
+.btn-svg {
+	display: inline-block;
+	background-color: #007bff; /* Set your button background color */
+	color: #fff; /* Set your button text color */
+	border: none;
+	border-radius: 5px; /* Set border radius as needed */
+	cursor: pointer;
+	padding: 0.5em;
+	width: 40px;
+}
+
+.btn-svg svg {
+	width: 20px; /* Set width of SVG icon */
+	height: 20px; /* Set height of SVG icon */
+	vertical-align: middle; /* Align SVG vertically with text */
+	margin-right: 5px; /* Adjust margin between icon and text */
+}
+
+.btn-svg:hover {
+	background-color: #0056b3; /* New background color on hover */
+}
+
+.setup-input-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+/* toggle loading */
+.loading-container {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.setup-input-container textarea {
+	flex: 1; /* Take up remaining space */
+	margin-right: 10px; /* Add some spacing between textarea and button */
+}
+
+footer {
+	margin-top: auto; /* Pushes the footer to the bottom */
 }
