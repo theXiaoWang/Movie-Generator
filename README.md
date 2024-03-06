@@ -19,7 +19,7 @@
 
 ## Overview
 
-This chatbot uses gpt-3.5-turbo and DALL·E 3 API to generate a movie plot, a title and a poster based on the prompt from which users have entered. The movie generator is fine tuned to tailor generating engaging, professional movie. Each movie is about 350 words long.
+This chatbot utilizes GPT-3.5 Turbo and the DALL·E 3 API to generate a movie plot, title, and poster based on prompts entered by users. The movie generator is finely tuned to excel at creating engaging, professional movies. Each movie synopsis is approximately 350 words long.
 
 ## Features
 
