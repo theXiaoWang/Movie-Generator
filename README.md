@@ -4,12 +4,17 @@
   <img src="https://img.shields.io/badge/OpenAI-412991?logo=openai&logoColor=fff&style=for-the-badge">
 </div>
 
-<br/>
-
 # Movie Generator
 
 <div align="center">
   <img src="public/images/devices_mockup.png" alt="Alt text" style="width: 80%; "/>
+</div>
+
+<div align="center">
+  <a href="https://movie-generator.cyclic.app">
+    <!-- <img src="https://img.shields.io/badge/-39477f?style=for-the-badge&logo=google-chrome&logoColor=white"> -->
+    <img src="https://img.shields.io/badge/try Movie Generator-E50914?logo=netflix&logoColor=fff&style=for-the-badge">
+  </a>
 </div>
 
 ## Overview
