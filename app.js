@@ -15,7 +15,7 @@ const openai = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY,
 });
 
-const openAiMiddleware = (model, max_tokens, temperature) => async (req, res, next) => {
+const openAiTextMiddleware = (model, max_tokens, temperature) => async (req, res, next) => {
 	try {
 		const response = await openai.chat.completions.create({
 			model,
@@ -23,35 +23,40 @@ const openAiMiddleware = (model, max_tokens, temperature) => async (req, res, ne
 			max_tokens,
 			temperature,
 		});
-		// console.log(response.choices[0].message.content);
+		// console.log(`${req.path}: `, response.choices[0].message.content);
 		res.json(response.choices[0].message.content); // Send only the needed data back to the frontend
-		next();
 	} catch (error) {
 		console.error(error);
 		res.status(500).send(error.message);
 	}
 };
 
-app.post("/fetch-reply", openAiMiddleware("gpt-3.5-turbo", 60), async (req, res) => {});
-
-app.post("/fetch-synopsis", openAiMiddleware("gpt-3.5-turbo", 700), async (req, res) => {});
-
-app.post("/fetch-title", openAiMiddleware("gpt-3.5-turbo", 25, 0.7), async (req, res) => {});
-
-app.post("/fetch-title", async (req, res) => {
+const openAiImageMiddleware = (model, size, response_format) => async (req, res, next) => {
 	try {
-		const response = await openai.createImage({
-			model: "dall-e-3",
-			prompt: "a white siamese cat",
+		const response = await openai.images.generate({
+			model,
+			prompt: req.body.content,
 			n: 1,
-			size: "256x256",
-		  });
-		  image_url = response.data.data[0].url;
-		
+			size,
+			response_format,
+		});
+		// console.log(`${req.path}: `, response.data[0].url);
+		res.json(response.data[0].url);
 	} catch (error) {
-		
+		console.error(error);
+		res.status(500).send(error.message);
 	}
-});
+};
+
+app.post("/fetch-reply", openAiTextMiddleware("gpt-3.5-turbo", 60), async (req, res) => {});
+
+app.post("/fetch-synopsis", openAiTextMiddleware("gpt-3.5-turbo", 700), async (req, res) => {});
+
+app.post("/fetch-title", openAiTextMiddleware("gpt-3.5-turbo", 25, 0.7), async (req, res) => {});
+
+app.post("/fetch-image-prompt", openAiTextMiddleware("gpt-3.5-turbo", 100, 0.8), async (req, res) => {});
+
+app.post("/fetch-image-url", openAiImageMiddleware("dall-e-3", "1024x1024", "url"), async (req, res) => {});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

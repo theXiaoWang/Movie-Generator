@@ -4,3 +4,9 @@
 	word-wrap: break-word;
 	width: 235px; /* or any other value you prefer */
 }
+
+.output-img-container img {
+	max-width: 100%;
+	border-radius: var(--border-red-lg);
+	box-shadow: 1px 1px 5px 1px var(--dark);
+}

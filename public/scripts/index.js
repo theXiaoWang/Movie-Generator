@@ -103,8 +103,61 @@ async function fetchTitle(synopsis) {
 		);
 		const title = response.data;
 		document.querySelector("#output-title").textContent = title;
+
+		fetchImagePrompt(title, synopsis);
 	} catch (error) {
 		console.log("Error:", error);
 		document.querySelector("#output-title").textContent = "Failed to fetch the reply. Please try again.";
+	}
+}
+
+async function fetchImagePrompt(title, synopsis) {
+	try {
+		const response = await axios.post(
+			"/fetch-image-prompt",
+			{
+				content: `Generate a short description of an image which could be used to advertise a movie based on a title
+				and synopsis. The description should be rich in visual details but contain no names.
+				###
+				title: Shadows of Tomorrow
+				synopsis: In a dystopian future where the sun is obscured by a perpetual cloud of ash, rogue scientist Ava stumbles upon an ancient technology capable of restoring sunlight. But when a totalitarian regime seeks to control the technology for its own oppressive agenda, Ava joins forces with a group of rebels. Together, they embark on a quest to activate the device and bring light back to the world, all while evading the regime's elite shadow trackers. As they journey through the gray wastelands, Ava learns about the power of hope and the true cost of freedom.
+				image description: A cloaked figure stands before a massive, dilapidated structure that seems to once have been a source of light. The world around them is in shades of gray, the sky a swirling mass of dark clouds and ash. The figure holds a glowing orb, the only source of color in the bleak landscape, casting long shadows behind them as a group of shadowy figures approach from the horizon.
+				###
+				title: The Last Symphony of Mars
+				synopsis: On the brink of extinction, the last colony on Mars faces a critical shortage of resources. Renowned composer Elara, known for her symphonies that once calmed the Martian storms, embarks on a final mission to convert the deadly tempests into energy. With an orchestra composed of the colony's finest musicians and an ancient, powerful instrument, Elara confronts the raging storms. As they play the most important symphony of their lives, they unlock the secret rhythms of Mars, which could either save or doom them all.
+				image description: A grand concert hall stands defiantly against a backdrop of towering red dust storms on Mars. Inside, a woman in an ornate, space-age conductor's uniform raises her baton over an assembly of musicians with futuristic instruments. The concert hall's transparent dome reveals the swirling Martian atmosphere, with bolts of lightning that appear to dance in time with the impending symphony.
+				###
+				title: ${title}
+				synopsis: ${synopsis}
+				image description: 
+				`,
+			},
+			{
+				headers: { "Content-Type": "application/json" },
+			}
+		);
+
+		fetchImageUrl(response.data);
+	} catch (error) {
+		console.log("Error:", error);
+		document.querySelector("#output-title").textContent = "Failed to fetch the reply. Please try again.";
+	}
+}
+
+async function fetchImageUrl(imagePrompt) {
+	try {
+		const response = await axios.post(
+			"/fetch-image-url",
+			{
+				content: `${imagePrompt}, there should be no text in this image`,
+			},
+			{
+				headers: { "Content-Type": "application/json" },
+			}
+		);
+		console.log("Image response data:", response.data);
+		document.querySelector("#output-img-container").innerHTML = `<img src="${response.data}" />`;
+	} catch (error) {
+		console.log("Error fetching image URL:", error);
 	}
 }
