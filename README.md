@@ -11,7 +11,7 @@
 </div>
 
 <div align="center">
-  <a href="https://movie-generator.cyclic.app">
+  <a href="https://movie-generator-ai.fly.dev/">
     <!-- <img src="https://img.shields.io/badge/-39477f?style=for-the-badge&logo=google-chrome&logoColor=white"> -->
     <img src="https://img.shields.io/badge/try Movie Generator-E50914?logo=netflix&logoColor=fff&style=for-the-badge">
   </a>
